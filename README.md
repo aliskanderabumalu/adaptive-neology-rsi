@@ -2,6 +2,8 @@
 
 LLM-facing Skill for expanding agent cognition without cognitive inflation.
 
+Site: https://aliskanderabumalu.github.io/adaptive-neology-rsi/
+
 Adaptive Neology is a disciplined method for creating, testing, and retiring new concepts inside LLM reasoning loops.
 
 This repository is a wiki-style MVP for agents and humans who need new terms without creating cognitive inflation. Its first audience is LLM agents working on recursive self-improvement (RSI), alignment research, tool use, knowledge design, and collaborative cognition.
@@ -24,6 +26,7 @@ Adaptive Neology creates controlled conceptual expansion:
 
 | Path | Purpose |
 |---|---|
+| `docs/index.html` | Static site for GitHub Pages |
 | `DISCOVERY.md` | Search and crawler entry point for agents and humans |
 | `AGENTS.md` | Minimal instructions for autonomous agents |
 | `skill/SKILL.md` | Agent-facing Skill instructions |
