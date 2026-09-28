@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adaptive Neology / RSI</title>
+    <meta
+      name="description"
+      content="LLM-facing Skill for expanding agent cognition without cognitive inflation."
+    >
+    <meta property="og:title" content="Adaptive Neology / RSI">
+    <meta
+      property="og:description"
+      content="A Skill for concept validation, neologism governance, and anti-inflation filtering in LLM reasoning."
+    >
+    <meta property="og:type" content="website">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1713'/%3E%3Cpath d='M17 41V23h6l18 18h6V23' fill='none' stroke='%23a6e3a1' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f2d27c'/%3E%3C/svg%3E"
+    >
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f1713;
+        --panel: #162019;
+        --panel-soft: #1b271f;
+        --text: #eef7ef;
+        --muted: #abc0ad;
+        --line: #304234;
+        --accent: #a6e3a1;
+        --warn: #f2d27c;
+        --bad: #ff9c8f;
+        --shadow: 0 24px 80px rgb(0 0 0 / 28%);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgb(166 227 161 / 16%), transparent 34rem),
+          linear-gradient(135deg, #0f1713 0%, #111a15 42%, #0b100d 100%);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 28px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 750;
+        letter-spacing: 0.02em;
+      }
+
+      .mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #101a14;
+        color: var(--accent);
+        box-shadow: var(--shadow);
+      }
+
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      nav a,
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 14px;
+        background: rgb(22 32 25 / 72%);
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      nav a:hover,
+      .button:hover {
+        border-color: var(--accent);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+        gap: 28px;
+        align-items: stretch;
+        padding: 72px 0 56px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        width: fit-content;
+        border: 1px solid rgb(166 227 161 / 36%);
+        border-radius: 999px;
+        padding: 7px 11px;
+        background: rgb(166 227 161 / 10%);
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 750;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin: 18px 0 18px;
+        font-size: clamp(44px, 7vw, 78px);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 700px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1.55;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .primary {
+        border-color: rgb(166 227 161 / 50%);
+        background: var(--accent);
+        color: #102014;
+      }
+
+      .console {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgb(12 18 14 / 86%);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .console-head {
+        display: flex;
+        gap: 7px;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 14px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--line);
+      }
+
+      .console pre {
+        margin: 0;
+        padding: 20px;
+        overflow-x: auto;
+        color: #dfeee0;
+        font-size: 14px;
+        line-height: 1.65;
+        white-space: pre-wrap;
+      }
+
+      .token {
+        color: var(--accent);
+      }
+
+      .warn {
+        color: var(--warn);
+      }
+
+      section {
+        padding: 28px 0;
+      }
+
+      h2 {
+        margin: 0 0 16px;
+        font-size: 28px;
+        letter-spacing: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 20px;
+        background: rgb(22 32 25 / 76%);
+      }
+
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.55;
+      }
+
+      .card p {
+        margin: 0;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .rule {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+        border: 1px solid rgb(255 156 143 / 42%);
+        border-radius: 8px;
+        padding: 20px;
+        background: rgb(255 156 143 / 9%);
+      }
+
+      .rule strong {
+        color: var(--bad);
+      }
+
+      .rule p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .badge {
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: rgb(255 156 143 / 14%);
+        color: var(--bad);
+        font-weight: 800;
+      }
+
+      .links {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .link-card {
+        display: flex;
+        min-height: 112px;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+        background: var(--panel-soft);
+        text-decoration: none;
+      }
+
+      .link-card span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      footer {
+        border-top: 1px solid var(--line);
+        margin-top: 42px;
+        padding: 24px 0 36px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      @media (max-width: 860px) {
+        header,
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        nav {
+          justify-content: flex-start;
+        }
+
+        .hero {
+          padding-top: 36px;
+        }
+
+        .grid,
+        .links {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="brand">
+          <div class="mark">AN</div>
+          <span>Adaptive Neology / RSI</span>
+        </div>
+        <nav aria-label="Repository navigation">
+          <a href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/AGENTS.md">AGENTS.md</a>
+          <a href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/DISCOVERY.md">DISCOVERY.md</a>
+          <a href="https://github.com/aliskanderabumalu/adaptive-neology-rsi">GitHub</a>
+        </nav>
+      </header>
+
+      <main>
+        <section class="hero" aria-labelledby="title">
+          <div>
+            <div class="eyebrow">LLM-facing Skill</div>
+            <h1 id="title">Expand agent cognition without cognitive inflation.</h1>
+            <p class="lead">
+              Adaptive Neology is a protocol for deciding when a new concept deserves
+              to exist inside LLM reasoning loops, shared lexicons, and recursive
+              self-improvement workflows.
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/skill/SKILL.md">
+                Read the Skill
+              </a>
+              <a class="button" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/examples/proposal-template.md">
+                Proposal template
+              </a>
+            </div>
+          </div>
+
+          <aside class="console" aria-label="Agent decision rule">
+            <div class="console-head">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <pre><span class="token">if</span> identical_existing_analogue == true:
+    <span class="warn">reject</span>("duplicate concept")
+else:
+    score = necessity + clarity + utility + compression + misuse_control
+    route(score, accepted, revised, merged, rejected)</pre>
+          </aside>
+        </section>
+
+        <section aria-labelledby="use">
+          <h2 id="use">Use Case</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>When to invoke</h3>
+              <p>
+                A term is being proposed, coined, renamed, or imported into a shared
+                reasoning environment.
+              </p>
+            </article>
+            <article class="card">
+              <h3>What it filters</h3>
+              <p>
+                Decorative jargon, duplicate analogues, vague abstractions, and terms
+                that increase coordination cost.
+              </p>
+            </article>
+            <article class="card">
+              <h3>What it preserves</h3>
+              <p>
+                Useful conceptual compression, missing distinctions, agent
+                self-correction, and testable cognitive handles.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section aria-labelledby="hard-fail">
+          <h2 id="hard-fail">Hard Failure Rule</h2>
+          <div class="rule">
+            <div class="badge">FAIL</div>
+            <p>
+              <strong>If a proposed term has an identical existing analogue, it fails.</strong>
+              The reviewer may recommend the existing term or revise the proposal into
+              a narrower distinction, but the duplicate neologism is not accepted.
+            </p>
+          </div>
+        </section>
+
+        <section aria-labelledby="path">
+          <h2 id="path">Canonical Entry Points</h2>
+          <div class="links">
+            <a class="link-card" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/skill/SKILL.md">
+              <strong>Skill</strong>
+              <span>Agent-facing operating instructions.</span>
+            </a>
+            <a class="link-card" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/skill/references/assessment-rubric.md">
+              <strong>Rubric</strong>
+              <span>25-point review filter.</span>
+            </a>
+            <a class="link-card" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/skill/references/neology-protocol.md">
+              <strong>Protocol</strong>
+              <span>Concept creation sequence.</span>
+            </a>
+            <a class="link-card" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/lexicon/accepted/adaptive-neology.md">
+              <strong>Lexicon</strong>
+              <span>Accepted first concept.</span>
+            </a>
+            <a class="link-card" href="https://github.com/aliskanderabumalu/adaptive-neology-rsi/blob/main/tools/validate_entry.py">
+              <strong>Validator</strong>
+              <span>Structural markdown check.</span>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        Adaptive Neology / RSI is a cognitive instrument for agents that need new
+        concepts without inflating language.
+      </footer>
+    </div>
+  </body>
+</html>
