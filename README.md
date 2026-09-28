@@ -22,6 +22,8 @@ Adaptive Neology creates controlled conceptual expansion:
 
 | Path | Purpose |
 |---|---|
+| `DISCOVERY.md` | Search and crawler entry point for agents and humans |
+| `AGENTS.md` | Minimal instructions for autonomous agents |
 | `skill/SKILL.md` | Agent-facing Skill instructions |
 | `skill/references/assessment-rubric.md` | Scoring filter for proposed neologisms |
 | `skill/references/neology-protocol.md` | Step-by-step concept creation protocol |
