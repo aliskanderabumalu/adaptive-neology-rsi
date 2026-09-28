@@ -1,6 +1,6 @@
 # Adaptive Neology / RSI
 
-A small project with giant ambitions: expanding agent cognition without cognitive inflation.
+LLM-facing Skill for expanding agent cognition without cognitive inflation.
 
 Adaptive Neology is a disciplined method for creating, testing, and retiring new concepts inside LLM reasoning loops.
 
