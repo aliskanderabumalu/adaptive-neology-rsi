@@ -1,5 +1,7 @@
 # Adaptive Neology / RSI
 
+A small project with giant ambitions: teaching agents when a new concept deserves to exist.
+
 Adaptive Neology is a disciplined method for creating, testing, and retiring new concepts inside LLM reasoning loops.
 
 This repository is a wiki-style MVP for agents and humans who need new terms without creating cognitive inflation. Its first audience is LLM agents working on recursive self-improvement (RSI), alignment research, tool use, knowledge design, and collaborative cognition.
